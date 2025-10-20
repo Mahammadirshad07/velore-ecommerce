@@ -1,0 +1,19 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+body {
+  
+  color: #ffffff;
+  
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+
+h1, h2, h3, .brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.1em;
+}

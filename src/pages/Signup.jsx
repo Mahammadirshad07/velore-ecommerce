@@ -1,0 +1,226 @@
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+const Signup = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validation
+    if (password.length < 6) {
+      alert('Password must be at least 6 characters long!');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+
+    try {
+      // Check if email already exists
+      const checkResponse = await fetch(`http://localhost:5000/users?email=${email}`);
+      const existingUsers = await checkResponse.json();
+      
+      if (existingUsers.length > 0) {
+        alert('Email already registered! Please login.');
+        return;
+      }
+
+      // Create new user
+      const response = await fetch('http://localhost:5000/users', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ 
+          name, 
+          email, 
+          password,
+          createdAt: new Date().toISOString()
+        })
+      });
+      
+      if (response.ok) {
+        alert('Account created successfully! Please login.');
+        navigate('/login');
+      } else {
+        alert('Failed to create account. Please try again!');
+      }
+      
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Network error! Make sure json-server is running on port 5000.');
+    }
+  };
+
+  const styles = {
+    container: {
+      backgroundColor: '#0a0a0a',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '2rem 1rem',
+      minHeight: '100vh',
+    },
+    formBox: {
+      backgroundColor: '#1a1a1a',
+      border: '1px solid #333',
+      borderRadius: '8px',
+      padding: '2rem',
+      maxWidth: '450px',
+      width: '100%',
+      boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
+    },
+    title: {
+      color: '#FFD700',
+      fontSize: '2rem',
+      fontFamily: 'serif',
+      textAlign: 'center',
+      marginBottom: '0.5rem',
+      letterSpacing: '0.15em',
+    },
+    subtitle: {
+      color: '#ccc',
+      textAlign: 'center',
+      marginBottom: '1.5rem',
+      fontSize: '0.9rem',
+    },
+    inputGroup: {
+      marginBottom: '1.25rem',
+    },
+    label: {
+      color: '#FFD700',
+      fontSize: '0.875rem',
+      marginBottom: '0.5rem',
+      display: 'block',
+      fontWeight: 'bold',
+    },
+    input: {
+      width: '100%',
+      padding: '0.75rem',
+      backgroundColor: '#0a0a0a',
+      border: '1px solid #333',
+      borderRadius: '4px',
+      color: '#fff',
+      fontSize: '1rem',
+      outline: 'none',
+    },
+    button: {
+      width: '100%',
+      padding: '0.875rem',
+      backgroundColor: '#FFD700',
+      color: '#000',
+      border: 'none',
+      borderRadius: '4px',
+      fontSize: '1rem',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      marginTop: '1rem',
+      letterSpacing: '0.05em',
+    },
+    divider: {
+      textAlign: 'center',
+      margin: '1.5rem 0',
+      color: '#888',
+      fontSize: '0.9rem',
+    },
+    link: {
+      color: '#FFD700',
+      textDecoration: 'none',
+      fontWeight: 'bold',
+    },
+    textCenter: {
+      textAlign: 'center',
+      color: '#ccc',
+      fontSize: '0.9rem',
+    },
+    helperText: {
+      color: '#888',
+      fontSize: '0.75rem',
+      marginTop: '0.3rem',
+    },
+  };
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.formBox}>
+        <h1 style={styles.title}>SIGN UP</h1>
+        <p style={styles.subtitle}>Create your VELORE account</p>
+
+        <form onSubmit={handleSubmit}>
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Full Name</label>
+            <input
+              type="text"
+              placeholder="Enter your full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              style={styles.input}
+            />
+          </div>
+
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Email Address</label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              style={styles.input}
+            />
+          </div>
+
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Password</label>
+            <input
+              type="password"
+              placeholder="Create a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+              style={styles.input}
+            />
+            <p style={styles.helperText}>Must be at least 6 characters</p>
+          </div>
+
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Confirm Password</label>
+            <input
+              type="password"
+              placeholder="Confirm your password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={6}
+              style={styles.input}
+            />
+          </div>
+
+          <button type="submit" style={styles.button}>
+            CREATE ACCOUNT
+          </button>
+        </form>
+
+        <p style={styles.divider}>───── OR ─────</p>
+
+        <p style={styles.textCenter}>
+          Already have an account?{' '}
+          <Link to="/login" style={styles.link}>
+            Login
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Signup;
