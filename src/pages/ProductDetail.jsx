@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { useWishlist } from '../context/WishlistContext';
 import { useToast } from '../context/ToastContext';
 
 function ProductDetail() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { toggleWishlist, isInWishlist } = useWishlist();
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -37,31 +34,8 @@ function ProductDetail() {
 
   const handleAddToCart = () => {
     if (product) {
-      addToCart({ ...product, quantity });
-      showToast(`Added ${quantity} x ${product.brand} ${product.name} to cart!`, 'success');
-    }
-  };
-
-  const handleBuyNow = () => {
-    if (product) {
-      addToCart({ ...product, quantity });
-      showToast('Redirecting to checkout...', 'success');
-      setTimeout(() => {
-        navigate('/checkout');
-      }, 800);
-    }
-  };
-
-  const handleToggleWishlist = () => {
-    if (product) {
-      const wasInWishlist = isInWishlist(product.id);
-      toggleWishlist(product);
-      
-      if (wasInWishlist) {
-        showToast('Removed from wishlist', 'info');
-      } else {
-        showToast('Added to wishlist!', 'success');
-      }
+      addToCart({ ...product, quantity: 1 });
+      showToast(`Added ${product.brand} ${product.name} to cart!`, 'success');
     }
   };
 
@@ -74,7 +48,7 @@ function ProductDetail() {
     container: {
       backgroundColor: '#0a0a0a',
       minHeight: '100vh',
-      padding: isMobile ? '2rem 1rem' : '3rem 2rem',
+      padding: isMobile ? '1.5rem 1rem' : '2rem',
     },
     content: {
       maxWidth: '1200px',
@@ -88,7 +62,7 @@ function ProductDetail() {
       borderRadius: '4px',
       cursor: 'pointer',
       fontSize: '0.9rem',
-      marginBottom: '2rem',
+      marginBottom: '1.5rem',
       display: 'inline-flex',
       alignItems: 'center',
       gap: '0.5rem',
@@ -96,75 +70,81 @@ function ProductDetail() {
     },
     productLayout: {
       display: 'grid',
-      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-      gap: isMobile ? '2rem' : '3rem',
+      gridTemplateColumns: isMobile ? '1fr' : '45% 55%',
+      gap: isMobile ? '1.5rem' : '2.5rem',
+      alignItems: 'start',
     },
     imageSection: {
       backgroundColor: '#1a1a1a',
       borderRadius: '8px',
-      padding: isMobile ? '1.5rem' : '2rem',
+      padding: isMobile ? '1rem' : '1.5rem',
       border: '1px solid #2a2a2a',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     productImage: {
       width: '100%',
-      height: isMobile ? '300px' : '500px',
-      objectFit: 'cover',
+      maxWidth: isMobile ? '280px' : '380px',
+      height: isMobile ? '280px' : '380px',
+      objectFit: 'contain',
       borderRadius: '8px',
     },
     detailsSection: {
       display: 'flex',
       flexDirection: 'column',
-      gap: '1.5rem',
+      gap: '1rem',
     },
     brand: {
-      fontSize: isMobile ? '0.9rem' : '1rem',
+      fontSize: isMobile ? '0.85rem' : '0.95rem',
       color: '#FFD700',
       fontWeight: 'bold',
       textTransform: 'uppercase',
       letterSpacing: '0.15em',
     },
     productName: {
-      fontSize: isMobile ? '2rem' : '2.5rem',
+      fontSize: isMobile ? '1.8rem' : '2.2rem',
       fontFamily: "'Cormorant Garamond', serif",
       color: '#fff',
-      marginBottom: '0.5rem',
+      marginBottom: '0.3rem',
+      lineHeight: '1.2',
     },
     ratingContainer: {
       display: 'flex',
       alignItems: 'center',
       gap: '0.5rem',
-      marginBottom: '1rem',
+      marginBottom: '0.5rem',
     },
     stars: {
-      fontSize: isMobile ? '1rem' : '1.2rem',
+      fontSize: isMobile ? '0.95rem' : '1.1rem',
     },
     ratingText: {
-      fontSize: isMobile ? '0.9rem' : '1rem',
+      fontSize: isMobile ? '0.85rem' : '0.95rem',
       color: '#ccc',
     },
     price: {
-      fontSize: isMobile ? '2rem' : '2.5rem',
+      fontSize: isMobile ? '1.8rem' : '2.2rem',
       color: '#FFD700',
       fontWeight: 'bold',
       fontFamily: "'Cormorant Garamond', serif",
-      marginBottom: '1rem',
+      marginBottom: '0.8rem',
     },
     description: {
-      fontSize: isMobile ? '0.95rem' : '1rem',
+      fontSize: isMobile ? '0.9rem' : '0.95rem',
       color: '#ccc',
-      lineHeight: '1.8',
-      marginBottom: '1.5rem',
+      lineHeight: '1.6',
+      marginBottom: '1rem',
     },
     divider: {
       height: '1px',
       backgroundColor: '#2a2a2a',
-      margin: '1.5rem 0',
+      margin: '1rem 0',
     },
     detailItem: {
       display: 'flex',
       justifyContent: 'space-between',
-      marginBottom: '0.75rem',
-      fontSize: isMobile ? '0.9rem' : '1rem',
+      marginBottom: '0.6rem',
+      fontSize: isMobile ? '0.85rem' : '0.9rem',
     },
     detailLabel: {
       color: '#999',
@@ -173,79 +153,20 @@ function ProductDetail() {
       color: '#fff',
       fontWeight: '500',
     },
-    actionsContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '1rem',
-      marginTop: '1.5rem',
-      marginBottom: '1.5rem',
-    },
-    quantityButton: {
-      width: isMobile ? '40px' : '45px',
-      height: isMobile ? '40px' : '45px',
-      backgroundColor: '#FFD700',
-      color: '#000',
-      border: 'none',
-      borderRadius: '6px',
-      fontSize: '1.5rem',
-      fontWeight: 'bold',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      transition: 'all 0.3s ease',
-    },
-    quantityDisplay: {
-      fontSize: isMobile ? '1.2rem' : '1.5rem',
-      color: '#fff',
-      fontWeight: 'bold',
-      minWidth: '50px',
-      textAlign: 'center',
-    },
-    buttonGroup: {
-      display: 'flex',
-      flexDirection: isMobile ? 'column' : 'row',
-      gap: '1rem',
-    },
     addToCartButton: {
-      flex: 1,
-      padding: '1rem 2rem',
+      width: '100%',
+      padding: isMobile ? '0.9rem' : '1rem',
       backgroundColor: '#FFD700',
       color: '#000',
       border: 'none',
       borderRadius: '6px',
-      fontSize: isMobile ? '1rem' : '1.1rem',
-      fontWeight: 'bold',
-      cursor: 'pointer',
-      transition: 'all 0.3s ease',
-    },
-    wishlistButtonDetail: {
-      flex: 1,
-      padding: '1rem',
-      backgroundColor: 'transparent',
-      border: '2px solid #FFD700',
-      borderRadius: '6px',
-      color: '#FFD700',
       fontSize: isMobile ? '0.95rem' : '1rem',
       fontWeight: 'bold',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '0.5rem',
-    },
-    buyNowButton: {
-      flex: 1,
-      padding: '1rem 2rem',
-      backgroundColor: 'transparent',
-      border: '2px solid #FFD700',
-      borderRadius: '6px',
-      color: '#FFD700',
-      fontSize: isMobile ? '1rem' : '1.1rem',
-      fontWeight: 'bold',
-      cursor: 'pointer',
-      transition: 'all 0.3s ease',
+      marginTop: '1rem',
+      textTransform: 'uppercase',
+      letterSpacing: '0.05em',
     },
     loading: {
       textAlign: 'center',
@@ -328,67 +249,19 @@ function ProductDetail() {
               </div>
             </div>
 
-            <div style={styles.divider}></div>
-
-            <div style={styles.actionsContainer}>
-              <button
-                style={styles.quantityButton}
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFA500'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FFD700'}
-              >
-                −
-              </button>
-              <span style={styles.quantityDisplay}>{quantity}</span>
-              <button
-                style={styles.quantityButton}
-                onClick={() => setQuantity(quantity + 1)}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFA500'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FFD700'}
-              >
-                +
-              </button>
-            </div>
-
-            <div style={styles.buttonGroup}>
-              <button
-                style={styles.addToCartButton}
-                onClick={handleAddToCart}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFA500'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FFD700'}
-              >
-                ADD TO CART 🛒
-              </button>
-
-              <button
-                style={styles.wishlistButtonDetail}
-                onClick={handleToggleWishlist}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#FFD700';
-                  e.currentTarget.style.color = '#000';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = '#FFD700';
-                }}
-              >
-                {isInWishlist(product.id) ? '❤️ IN WISHLIST' : '🤍 ADD TO WISHLIST'}
-              </button>
-            </div>
-
             <button
-              style={styles.buyNowButton}
-              onClick={handleBuyNow}
+              style={styles.addToCartButton}
+              onClick={handleAddToCart}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#FFD700';
-                e.currentTarget.style.color = '#000';
+                e.currentTarget.style.backgroundColor = '#FFA500';
+                e.currentTarget.style.transform = 'scale(1.02)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#FFD700';
+                e.currentTarget.style.backgroundColor = '#FFD700';
+                e.currentTarget.style.transform = 'scale(1)';
               }}
             >
-              BUY NOW
+              ADD TO CART 🛒
             </button>
           </div>
         </div>

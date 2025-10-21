@@ -21,14 +21,14 @@ function Cart() {
     container: {
       backgroundColor: '#0a0a0a',
       minHeight: '100vh',
-      padding: isMobile ? '2rem 1rem' : '3rem 2rem',
+      padding: isMobile ? '1.5rem 1rem' : '3rem 2rem',
     },
     content: {
       maxWidth: '1400px',
       margin: '0 auto',
     },
     title: {
-      fontSize: isMobile ? '2rem' : '2.5rem',
+      fontSize: isMobile ? '1.8rem' : '2.5rem',
       fontFamily: "'Cormorant Garamond', serif",
       color: '#FFD700',
       marginBottom: isMobile ? '1.5rem' : '2rem',
@@ -37,20 +37,20 @@ function Cart() {
     },
     emptyCart: {
       textAlign: 'center',
-      padding: '4rem 2rem',
+      padding: isMobile ? '3rem 1rem' : '4rem 2rem',
     },
     emptyText: {
-      fontSize: isMobile ? '1.2rem' : '1.5rem',
+      fontSize: isMobile ? '1.1rem' : '1.5rem',
       color: '#999',
       marginBottom: '2rem',
     },
     shopButton: {
-      padding: '0.875rem 2rem',
+      padding: isMobile ? '0.75rem 1.5rem' : '0.875rem 2rem',
       backgroundColor: '#FFD700',
       color: '#000',
       border: 'none',
       borderRadius: '4px',
-      fontSize: '1rem',
+      fontSize: isMobile ? '0.9rem' : '1rem',
       fontWeight: 'bold',
       cursor: 'pointer',
       textDecoration: 'none',
@@ -65,19 +65,24 @@ function Cart() {
     cartItems: {
       display: 'flex',
       flexDirection: 'column',
-      gap: '1rem',
+      gap: isMobile ? '1rem' : '1.5rem',
     },
     cartItem: {
       backgroundColor: '#1a1a1a',
       borderRadius: '8px',
       padding: isMobile ? '1rem' : '1.5rem',
       display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
       gap: isMobile ? '1rem' : '1.5rem',
       border: '1px solid #2a2a2a',
     },
+    imageContainer: {
+      display: 'flex',
+      justifyContent: isMobile ? 'center' : 'flex-start',
+    },
     itemImage: {
-      width: isMobile ? '80px' : '120px',
-      height: isMobile ? '80px' : '120px',
+      width: isMobile ? '120px' : '120px',
+      height: isMobile ? '120px' : '120px',
       objectFit: 'cover',
       borderRadius: '6px',
       backgroundColor: '#0a0a0a',
@@ -87,9 +92,10 @@ function Cart() {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
+      gap: isMobile ? '0.75rem' : '0',
     },
     itemBrand: {
-      fontSize: isMobile ? '0.75rem' : '0.85rem',
+      fontSize: isMobile ? '0.7rem' : '0.85rem',
       color: '#FFD700',
       fontWeight: 'bold',
       textTransform: 'uppercase',
@@ -102,26 +108,33 @@ function Cart() {
       marginTop: '0.25rem',
     },
     itemPrice: {
-      fontSize: isMobile ? '1.1rem' : '1.3rem',
+      fontSize: isMobile ? '1.2rem' : '1.3rem',
       color: '#FFD700',
       fontWeight: 'bold',
       fontFamily: "'Cormorant Garamond', serif",
-      marginTop: '0.5rem',
+      marginTop: isMobile ? '0.5rem' : '0.5rem',
+    },
+    controlsWrapper: {
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: isMobile ? 'stretch' : 'center',
+      gap: isMobile ? '0.75rem' : '1rem',
+      marginTop: isMobile ? '0.75rem' : '0.75rem',
     },
     quantityControls: {
       display: 'flex',
       alignItems: 'center',
+      justifyContent: isMobile ? 'center' : 'flex-start',
       gap: '0.75rem',
-      marginTop: '0.75rem',
     },
     quantityButton: {
-      width: isMobile ? '30px' : '35px',
-      height: isMobile ? '30px' : '35px',
+      width: isMobile ? '40px' : '35px',
+      height: isMobile ? '40px' : '35px',
       backgroundColor: '#FFD700',
       color: '#000',
       border: 'none',
       borderRadius: '4px',
-      fontSize: isMobile ? '1.2rem' : '1.4rem',
+      fontSize: isMobile ? '1.3rem' : '1.4rem',
       fontWeight: 'bold',
       cursor: 'pointer',
       display: 'flex',
@@ -130,23 +143,23 @@ function Cart() {
       transition: 'all 0.3s ease',
     },
     quantity: {
-      fontSize: isMobile ? '1rem' : '1.1rem',
+      fontSize: isMobile ? '1.1rem' : '1.1rem',
       color: '#fff',
       fontWeight: 'bold',
-      minWidth: isMobile ? '30px' : '40px',
+      minWidth: isMobile ? '40px' : '40px',
       textAlign: 'center',
     },
     removeButton: {
-      padding: isMobile ? '0.5rem 1rem' : '0.6rem 1.2rem',
+      padding: isMobile ? '0.6rem 1rem' : '0.6rem 1.2rem',
       backgroundColor: 'transparent',
       color: '#ff4444',
       border: '1px solid #ff4444',
       borderRadius: '4px',
-      fontSize: isMobile ? '0.8rem' : '0.9rem',
+      fontSize: isMobile ? '0.85rem' : '0.9rem',
       fontWeight: 'bold',
       cursor: 'pointer',
-      marginTop: '0.75rem',
       transition: 'all 0.3s ease',
+      textAlign: 'center',
     },
     summary: {
       backgroundColor: '#1a1a1a',
@@ -168,8 +181,9 @@ function Cart() {
       display: 'flex',
       justifyContent: 'space-between',
       marginBottom: '1rem',
-      fontSize: isMobile ? '0.9rem' : '1rem',
+      fontSize: isMobile ? '0.85rem' : '1rem',
       color: '#ccc',
+      gap: '1rem',
     },
     divider: {
       height: '1px',
@@ -182,16 +196,17 @@ function Cart() {
       fontSize: isMobile ? '1.3rem' : '1.5rem',
       fontWeight: 'bold',
       color: '#FFD700',
-      fontFamily: "'Cormorant Garamond', serif",
+      fontFamily: "'Cormorant Garamond', serif'",
+      gap: '1rem',
     },
     checkoutButton: {
       width: '100%',
-      padding: '1rem',
+      padding: isMobile ? '0.9rem' : '1rem',
       backgroundColor: '#FFD700',
       color: '#000',
       border: 'none',
       borderRadius: '4px',
-      fontSize: isMobile ? '1rem' : '1.1rem',
+      fontSize: isMobile ? '0.95rem' : '1.1rem',
       fontWeight: 'bold',
       cursor: 'pointer',
       marginTop: '1.5rem',
@@ -200,12 +215,12 @@ function Cart() {
     },
     clearButton: {
       width: '100%',
-      padding: '0.75rem',
+      padding: isMobile ? '0.7rem' : '0.75rem',
       backgroundColor: 'transparent',
       color: '#ff4444',
       border: '1px solid #ff4444',
       borderRadius: '4px',
-      fontSize: isMobile ? '0.9rem' : '1rem',
+      fontSize: isMobile ? '0.85rem' : '1rem',
       fontWeight: 'bold',
       cursor: 'pointer',
       marginTop: '1rem',
@@ -219,7 +234,7 @@ function Cart() {
         <div style={styles.content}>
           <h1 style={styles.title}>SHOPPING CART</h1>
           <div style={styles.emptyCart}>
-            <div style={{ fontSize: '5rem', marginBottom: '1rem' }}>🛒</div>
+            <div style={{ fontSize: isMobile ? '4rem' : '5rem', marginBottom: '1rem' }}>🛒</div>
             <div style={styles.emptyText}>Your cart is empty</div>
             <Link
               to="/"
@@ -245,7 +260,9 @@ function Cart() {
           <div style={styles.cartItems}>
             {cartItems.map((item) => (
               <div key={item.id} style={styles.cartItem}>
-                <img src={item.image} alt={item.name} style={styles.itemImage} />
+                <div style={styles.imageContainer}>
+                  <img src={item.image} alt={item.name} style={styles.itemImage} />
+                </div>
                 
                 <div style={styles.itemDetails}>
                   <div>
@@ -256,24 +273,26 @@ function Cart() {
                     </div>
                   </div>
                   
-                  <div style={styles.quantityControls}>
-                    <button
-                      style={styles.quantityButton}
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFA500'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FFD700'}
-                    >
-                      −
-                    </button>
-                    <span style={styles.quantity}>{item.quantity}</span>
-                    <button
-                      style={styles.quantityButton}
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFA500'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FFD700'}
-                    >
-                      +
-                    </button>
+                  <div style={styles.controlsWrapper}>
+                    <div style={styles.quantityControls}>
+                      <button
+                        style={styles.quantityButton}
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFA500'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FFD700'}
+                      >
+                        −
+                      </button>
+                      <span style={styles.quantity}>{item.quantity}</span>
+                      <button
+                        style={styles.quantityButton}
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFA500'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FFD700'}
+                      >
+                        +
+                      </button>
+                    </div>
                     
                     <button
                       style={styles.removeButton}

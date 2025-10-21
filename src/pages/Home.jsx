@@ -16,29 +16,29 @@ function Home() {
   const { showToast } = useToast();
 
   const bannerImages = [
-    '/images/perfume-1.jpg',
-    '/images/perfume-2.jpg',
-    '/images/perfume-3.jpg',
-    '/images/perfume-4.jpg',
-    '/images/perfume-5.jpg',
+    'https://images.unsplash.com/photo-1587017539504-67cfbddac569?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=laura-chouette-gbT2KAq1V5c-unsplash.jpg',
+    'https://images.unsplash.com/photo-1587304189889-6c57ea91ba04?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1074 ',
+    'https://images.unsplash.com/photo-1622618991746-fe6004db3a47?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=birgith-roosipuu-nka_sIQpKEU-unsplash.jpg',
+    'https://images.pexels.com/photos/965990/pexels-photo-965990.jpeg?cs=srgb&dl=pexels-valeriya-965990.jpg&fm=jpg',
+    'https://images.unsplash.com/photo-1514348871858-1d3c20902571?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=jess-bailey-NaTza96eJm0-unsplash.jpg',
   ];
 
   const categories = [
     {
       title: 'FOR MEN',
-      image: '/images/categories/for-men.jpg',
+      image: 'https://images.unsplash.com/photo-1659415455925-8b8eef9f93d0?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=corey-watson-SrflP5JLWhM-unsplash.jpg',
       link: '/for-men',
       description: 'Bold & Masculine Fragrances'
     },
     {
       title: 'FOR WOMEN',
-      image: '/images/categories/for-women.jpg',
+      image: 'https://images.unsplash.com/photo-1672848700942-68b6a4550540?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=beautinow-niche-perfume-k1X05CSCybE-unsplash.jpg',
       link: '/for-women',
       description: 'Elegant & Feminine Scents'
     },
     {
       title: 'NICHE',
-      image: '/images/categories/niche.jpg',
+      image: 'https://images.unsplash.com/photo-1717852885839-166ce0621811?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=filip-baotic-B_efb80zRdo-unsplash.jpg',
       link: '/niche',
       description: 'Exclusive Artisan Perfumes'
     }

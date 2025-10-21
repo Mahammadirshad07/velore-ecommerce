@@ -80,7 +80,7 @@ function Checkout() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (validateForm()) {
@@ -93,14 +93,55 @@ function Checkout() {
         shippingAddress: formData,
         total: getCartTotal() + (getCartTotal() >= 5000 ? 0 : 100),
         orderDate: new Date().toISOString(),
+        status: 'Processing'
       };
       
-      localStorage.setItem('lastOrder', JSON.stringify(orderData));
-      clearCart();
-      setOrderPlaced(true);
-      
-      // Scroll to top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      try {
+        // POST to json-server (saves to db.json)
+        const response = await fetch('http://localhost:3001/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderData)
+        });
+
+        if (response.ok) {
+          console.log('✅ Order saved to db.json successfully!');
+          
+          // Also save to localStorage as backup
+          localStorage.setItem('lastOrder', JSON.stringify(orderData));
+          
+          // Save to order history in localStorage
+          const existingHistory = localStorage.getItem('orderHistory');
+          const orderHistory = existingHistory ? JSON.parse(existingHistory) : [];
+          orderHistory.push(orderData);
+          localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+          
+          clearCart();
+          setOrderPlaced(true);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          throw new Error('Failed to save order');
+        }
+      } catch (error) {
+        console.error('⚠️ Error saving order to json-server:', error);
+        console.log('📝 Saving to localStorage as fallback...');
+        
+        // Fallback: Save only to localStorage if json-server is not running
+        localStorage.setItem('lastOrder', JSON.stringify(orderData));
+        const existingHistory = localStorage.getItem('orderHistory');
+        const orderHistory = existingHistory ? JSON.parse(existingHistory) : [];
+        orderHistory.push(orderData);
+        localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+        
+        clearCart();
+        setOrderPlaced(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Optional: Show a subtle notification
+        console.warn('Note: Order saved to localStorage. json-server may not be running on port 3001.');
+      }
     }
   };
 
@@ -134,77 +175,77 @@ function Checkout() {
     },
     // Success Message Styles
     successContainer: {
-  backgroundColor: '#1a1a1a',
-  borderRadius: '8px',
-  padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',  // ← REDUCED
-  border: '2px solid #4caf50',
-  textAlign: 'center',
-  maxWidth: '500px',  // ← REDUCED from 600px
-  margin: '0 auto',
-},
-successIcon: {
-  width: isMobile ? '60px' : '70px',  // ← REDUCED
-  height: isMobile ? '60px' : '70px',  // ← REDUCED
-  borderRadius: '50%',
-  backgroundColor: 'rgba(76, 175, 80, 0.2)',
-  border: '3px solid #4caf50',  // ← REDUCED from 4px
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem',  // ← REDUCED
-  fontSize: isMobile ? '2rem' : '2.5rem',  // ← REDUCED
-  animation: 'scaleIn 0.5s ease-out',
-},
-successTitle: {
-  fontSize: isMobile ? '1.5rem' : '1.8rem',  // ← REDUCED
-  fontFamily: "'Cormorant Garamond', serif",
-  color: '#4caf50',
-  marginBottom: '0.75rem',  // ← REDUCED
-},
-successMessage: {
-  fontSize: isMobile ? '0.9rem' : '0.95rem',  // ← REDUCED
-  color: '#ccc',
-  marginBottom: '1rem',  // ← REDUCED
-  lineHeight: '1.5',  // ← REDUCED
-},
-orderNumberBox: {
-  backgroundColor: '#0a0a0a',
-  padding: '1rem',  // ← REDUCED from 1.5rem
-  borderRadius: '6px',
-  border: '1px solid #2a2a2a',
-  marginBottom: '1rem',  // ← REDUCED from 2rem
-},
-orderNumberLabel: {
-  fontSize: '0.8rem',  // ← REDUCED
-  color: '#999',
-  marginBottom: '0.4rem',  // ← REDUCED
-},
-orderNumberValue: {
-  fontSize: isMobile ? '1.1rem' : '1.2rem',  // ← REDUCED
-  fontFamily: "'Cormorant Garamond', serif",
-  color: '#FFD700',
-  fontWeight: 'bold',
-  letterSpacing: '0.1em',
-},
-buttonContainer: {
-  display: 'flex',
-  flexDirection: isMobile ? 'column' : 'row',
-  gap: '0.75rem',  // ← REDUCED from 1rem
-  marginTop: '1.5rem',  // ← REDUCED from 2rem
-},
-button: {
-  flex: 1,
-  padding: '0.75rem 1.5rem',  // ← REDUCED
-  border: 'none',
-  borderRadius: '6px',
-  fontSize: '0.9rem',  // ← REDUCED
-  fontWeight: 'bold',
-  cursor: 'pointer',
-  textDecoration: 'none',
-  display: 'inline-block',
-  transition: 'all 0.3s ease',
-  textAlign: 'center',
-},
+      backgroundColor: '#1a1a1a',
+      borderRadius: '8px',
+      padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+      border: '2px solid #4caf50',
+      textAlign: 'center',
+      maxWidth: '500px',
+      margin: '0 auto',
+    },
+    successIcon: {
+      width: isMobile ? '60px' : '70px',
+      height: isMobile ? '60px' : '70px',
+      borderRadius: '50%',
+      backgroundColor: 'rgba(76, 175, 80, 0.2)',
+      border: '3px solid #4caf50',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      margin: '0 auto 1.5rem',
+      fontSize: isMobile ? '2rem' : '2.5rem',
+      animation: 'scaleIn 0.5s ease-out',
+    },
+    successTitle: {
+      fontSize: isMobile ? '1.5rem' : '1.8rem',
+      fontFamily: "'Cormorant Garamond', serif",
+      color: '#4caf50',
+      marginBottom: '0.75rem',
+    },
+    successMessage: {
+      fontSize: isMobile ? '0.9rem' : '0.95rem',
+      color: '#ccc',
+      marginBottom: '1rem',
+      lineHeight: '1.5',
+    },
+    orderNumberBox: {
+      backgroundColor: '#0a0a0a',
+      padding: '1rem',
+      borderRadius: '6px',
+      border: '1px solid #2a2a2a',
+      marginBottom: '1rem',
+    },
+    orderNumberLabel: {
+      fontSize: '0.8rem',
+      color: '#999',
+      marginBottom: '0.4rem',
+    },
+    orderNumberValue: {
+      fontSize: isMobile ? '1.1rem' : '1.2rem',
+      fontFamily: "'Cormorant Garamond', serif",
+      color: '#FFD700',
+      fontWeight: 'bold',
+      letterSpacing: '0.1em',
+    },
+    buttonContainer: {
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      gap: '0.75rem',
+      marginTop: '1.5rem',
+    },
+    button: {
+      flex: 1,
+      padding: '0.75rem 1.5rem',
+      border: 'none',
+      borderRadius: '6px',
+      fontSize: '0.9rem',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      textDecoration: 'none',
+      display: 'inline-block',
+      transition: 'all 0.3s ease',
+      textAlign: 'center',
+    },
     primaryButton: {
       backgroundColor: '#FFD700',
       color: '#000',
@@ -433,12 +474,12 @@ button: {
 
             <div style={styles.buttonContainer}>
               <Link
-                to="/"
+                to="/orders"
                 style={{...styles.button, ...styles.primaryButton}}
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFA500'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FFD700'}
               >
-                CONTINUE SHOPPING
+                📦 VIEW ORDERS
               </Link>
               <Link
                 to="/"
@@ -452,7 +493,7 @@ button: {
                   e.currentTarget.style.color = '#FFD700';
                 }}
               >
-                BACK TO HOME
+                🏠 BACK TO HOME
               </Link>
             </div>
           </div>
