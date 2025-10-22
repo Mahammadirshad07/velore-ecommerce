@@ -12,23 +12,22 @@ function Orders() {
   }, []);
 
   useEffect(() => {
-    // Load orders from localStorage
+  
     const allOrders = [];
     
-    // Get the last order
+  
     const lastOrder = localStorage.getItem('lastOrder');
     if (lastOrder) {
       allOrders.push(JSON.parse(lastOrder));
     }
 
-    // Get all historical orders (if you want to store multiple)
     const historicalOrders = localStorage.getItem('orderHistory');
     if (historicalOrders) {
       const parsed = JSON.parse(historicalOrders);
       allOrders.push(...parsed);
     }
 
-    // Sort by date (newest first)
+    
     allOrders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
     
     setOrders(allOrders);
@@ -279,7 +278,7 @@ function Orders() {
     },
   };
 
-  // Empty state
+ 
   if (orders.length === 0) {
     return (
       <div style={styles.container}>
@@ -309,7 +308,7 @@ function Orders() {
     );
   }
 
-  // Orders list
+  
   return (
     <div style={styles.container}>
       <div style={styles.content}>
@@ -342,7 +341,7 @@ function Orders() {
                 </div>
               </div>
 
-              {/* Order Items */}
+             
               <div style={styles.orderItems}>
                 {order.items.map((item) => (
                   <div key={item.id} style={styles.orderItem}>
@@ -359,7 +358,7 @@ function Orders() {
                 ))}
               </div>
 
-              {/* Shipping Address */}
+             
               <div style={styles.addressSection}>
                 <div style={styles.addressTitle}>🏠 SHIPPING ADDRESS</div>
                 <div style={styles.addressText}>
@@ -370,7 +369,7 @@ function Orders() {
                 </div>
               </div>
 
-              {/* Order Footer */}
+              
               <div style={styles.orderFooter}>
                 <div style={styles.totalSection}>
                   <div style={styles.totalLabel}>Total Amount</div>

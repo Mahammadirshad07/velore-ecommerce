@@ -14,7 +14,6 @@ function OrderDetails() {
   }, []);
 
   useEffect(() => {
-    // Load order from localStorage
     const lastOrder = localStorage.getItem('lastOrder');
     if (lastOrder) {
       const parsedOrder = JSON.parse(lastOrder);
@@ -24,7 +23,7 @@ function OrderDetails() {
       }
     }
 
-    // Check order history
+   
     const orderHistory = localStorage.getItem('orderHistory');
     if (orderHistory) {
       const orders = JSON.parse(orderHistory);
@@ -35,7 +34,7 @@ function OrderDetails() {
       }
     }
 
-    // Order not found, redirect
+    
     navigate('/orders');
   }, [orderNumber, navigate]);
 
@@ -105,7 +104,7 @@ function OrderDetails() {
       fontWeight: 'bold',
       marginTop: '1rem',
     },
-    // Tracking Timeline
+    
     trackingSection: {
       backgroundColor: '#1a1a1a',
       border: '1px solid #2a2a2a',
@@ -162,7 +161,7 @@ function OrderDetails() {
       top: isMobile ? '0' : '30px',
       zIndex: 0,
     },
-    // Details Grid
+   
     detailsGrid: {
       display: 'grid',
       gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
@@ -207,7 +206,7 @@ function OrderDetails() {
       backgroundColor: '#2a2a2a',
       margin: '1rem 0',
     },
-    // Order Items
+   
     itemsCard: {
       backgroundColor: '#1a1a1a',
       border: '1px solid #2a2a2a',
@@ -316,7 +315,6 @@ function OrderDetails() {
   return (
     <div style={styles.container}>
       <div style={styles.content}>
-        {/* Back Button */}
         <Link
           to="/orders"
           style={styles.backButton}
@@ -332,7 +330,7 @@ function OrderDetails() {
           ← Back to Orders
         </Link>
 
-        {/* Order Header */}
+        
         <div style={styles.header}>
           <div style={styles.orderNumber}>ORDER #{order.orderNumber}</div>
           <div style={styles.orderDate}>Placed on {formatDate(order.orderDate)}</div>
@@ -341,12 +339,11 @@ function OrderDetails() {
           </div>
         </div>
 
-        {/* Tracking Timeline */}
+        
         <div style={styles.trackingSection}>
           <h2 style={styles.sectionTitle}>📍 Order Tracking</h2>
           
           <div style={styles.timeline}>
-            {/* Timeline Line */}
             <div
               style={{
                 ...styles.timelineLine,
@@ -381,9 +378,9 @@ function OrderDetails() {
           </div>
         </div>
 
-        {/* Details Grid */}
+        
         <div style={styles.detailsGrid}>
-          {/* Shipping Address */}
+         
           <div style={styles.detailsCard}>
             <h3 style={styles.cardTitle}>
               🏠 Shipping Address
@@ -398,7 +395,7 @@ function OrderDetails() {
             </div>
           </div>
 
-          {/* Payment & Delivery Info */}
+         
           <div style={styles.detailsCard}>
             <h3 style={styles.cardTitle}>
               💳 Payment & Delivery
@@ -427,7 +424,7 @@ function OrderDetails() {
           </div>
         </div>
 
-        {/* Order Items */}
+        
         <div style={styles.itemsCard}>
           <h3 style={styles.cardTitle}>
             🛍️ Order Items ({order.items.length})
@@ -470,7 +467,7 @@ function OrderDetails() {
           </div>
         </div>
 
-        {/* Action Buttons */}
+     
         <div style={styles.actionButtons}>
           <Link
             to="/"

@@ -10,21 +10,20 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Check credentials from db.json
+      
       const response = await fetch(`http://localhost:5000/users?email=${email}&password=${password}`);
       const users = await response.json();
       
       if (users.length > 0) {
-        // Login successful
         const user = users[0];
         
-        // Save to localStorage
+        
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('currentUser', JSON.stringify(user));
         
         alert(`Welcome back, ${user.name}!`);
         
-        // Redirect to home page
+      
         navigate('/');
       } else {
         alert('Invalid email or password!');

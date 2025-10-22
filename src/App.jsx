@@ -46,7 +46,7 @@ function App() {
               <Route path="/orders" element={<Orders />} />
               <Route path="/order/:orderNumber" element={<OrderDetails />} />
               
-              {/* 404 Page - Must be last */}
+              
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
@@ -56,7 +56,7 @@ function App() {
   );
 }
 
-// 404 Not Found Component
+
 function NotFound() {
   return (
     <div style={{

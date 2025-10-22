@@ -7,11 +7,11 @@ function Checkout() {
   const { cartItems, getCartTotal, clearCart } = useCart();
   const navigate = useNavigate();
 
-  // Success state
+  
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
 
-  // Form state
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -97,7 +97,7 @@ function Checkout() {
       };
       
       try {
-        // POST to json-server (saves to db.json)
+        
         const response = await fetch('http://localhost:3001/orders', {
           method: 'POST',
           headers: {
@@ -109,10 +109,10 @@ function Checkout() {
         if (response.ok) {
           console.log('✅ Order saved to db.json successfully!');
           
-          // Also save to localStorage as backup
+          
           localStorage.setItem('lastOrder', JSON.stringify(orderData));
           
-          // Save to order history in localStorage
+          
           const existingHistory = localStorage.getItem('orderHistory');
           const orderHistory = existingHistory ? JSON.parse(existingHistory) : [];
           orderHistory.push(orderData);
@@ -128,7 +128,7 @@ function Checkout() {
         console.error('⚠️ Error saving order to json-server:', error);
         console.log('📝 Saving to localStorage as fallback...');
         
-        // Fallback: Save only to localStorage if json-server is not running
+        
         localStorage.setItem('lastOrder', JSON.stringify(orderData));
         const existingHistory = localStorage.getItem('orderHistory');
         const orderHistory = existingHistory ? JSON.parse(existingHistory) : [];
@@ -139,7 +139,7 @@ function Checkout() {
         setOrderPlaced(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         
-        // Optional: Show a subtle notification
+        
         console.warn('Note: Order saved to localStorage. json-server may not be running on port 3001.');
       }
     }
@@ -255,7 +255,7 @@ function Checkout() {
       color: '#FFD700',
       border: '2px solid #FFD700',
     },
-    // Form Styles
+    
     layout: {
       display: 'grid',
       gridTemplateColumns: isMobile ? '1fr' : '1.5fr 1fr',
@@ -450,7 +450,7 @@ function Checkout() {
     },
   };
 
-  // Success View
+ 
   if (orderPlaced) {
     return (
       <div style={styles.container}>
@@ -517,7 +517,7 @@ function Checkout() {
     );
   }
 
-  // Checkout Form View
+ 
   return (
     <div style={styles.container}>
       <div style={styles.content}>

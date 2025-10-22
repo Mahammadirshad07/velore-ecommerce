@@ -8,7 +8,7 @@ function Search() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filter States
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [priceRange, setPriceRange] = useState([0, 25000]);
@@ -16,7 +16,7 @@ function Search() {
 
   const { addToCart } = useCart();
 
-  // Fetch all products
+  
   useEffect(() => {
     fetch('/db.json')
       .then(response => response.json())
@@ -31,11 +31,11 @@ function Search() {
       });
   }, []);
 
-  // Apply filters whenever any filter changes
+  
   useEffect(() => {
     let results = [...allProducts];
 
-    // 1. Search filter (by name or brand)
+   
     if (searchQuery) {
       results = results.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -43,17 +43,16 @@ function Search() {
       );
     }
 
-    // 2. Category filter
+    
     if (selectedCategory !== 'all') {
       results = results.filter(product => product.category === selectedCategory);
     }
 
-    // 3. Price range filter
     results = results.filter(
       product => product.price >= priceRange[0] && product.price <= priceRange[1]
     );
 
-    // 4. Sort
+    
     switch (sortBy) {
       case 'price-low':
         results.sort((a, b) => a.price - b.price);
@@ -336,9 +335,9 @@ function Search() {
         </div>
 
         <div style={styles.layout}>
-          {/* Sidebar - Filters */}
+          
           <aside style={styles.sidebar}>
-            {/* Search */}
+            
             <div style={styles.filterSection}>
               <div style={styles.filterTitle}>🔍 Search</div>
               <input
@@ -350,7 +349,7 @@ function Search() {
               />
             </div>
 
-            {/* Category Filter */}
+            
             <div style={styles.filterSection}>
               <div style={styles.filterTitle}>📂 Category</div>
               <select
@@ -365,7 +364,7 @@ function Search() {
               </select>
             </div>
 
-            {/* Price Range */}
+           
             <div style={styles.filterSection}>
               <div style={styles.filterTitle}>💰 Price Range</div>
               <div style={styles.priceRange}>
@@ -391,7 +390,7 @@ function Search() {
               </div>
             </div>
 
-            {/* Clear Filters */}
+           
             <button
               style={styles.clearButton}
               onClick={handleClearFilters}
@@ -408,7 +407,7 @@ function Search() {
             </button>
           </aside>
 
-          {/* Main Content - Products */}
+         
           <main style={styles.mainContent}>
             {/* Results Header */}
             <div style={styles.resultsHeader}>
@@ -430,7 +429,7 @@ function Search() {
               </div>
             </div>
 
-            {/* Products Grid */}
+            
             {filteredProducts.length > 0 ? (
               <div style={styles.productsGrid}>
                 {filteredProducts.map((product) => (

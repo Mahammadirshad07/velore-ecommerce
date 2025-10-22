@@ -7,19 +7,19 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
-  // Get real counts from contexts
+
   const { getWishlistCount } = useWishlist();
   const { getCartCount } = useCart();
 
   const cartCount = getCartCount();
   const wishlistCount = getWishlistCount();
 
-  // Update mobile state on window resize
+ 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
       if (window.innerWidth >= 1024) {
-        setIsMenuOpen(false); // Close mobile menu on desktop
+        setIsMenuOpen(false); 
       }
     };
 
@@ -120,12 +120,12 @@ const Navbar = () => {
   return (
     <nav style={styles.navbar}>
       <div style={styles.container}>
-        {/* Brand Name */}
+       
         <Link to="/" style={styles.brandName}>
           VELORE
         </Link>
 
-        {/* Desktop Menu */}
+       
         <ul style={styles.navMenu}>
           <li><Link to="/" style={styles.navLink}>HOME</Link></li>
           {/* <li><Link to="/brand" style={styles.navLink}>BRAND</Link></li> */}
@@ -134,7 +134,7 @@ const Navbar = () => {
           <li><Link to="/niche" style={styles.navLink}>NICHE</Link></li>
         </ul>
 
-        {/* Desktop Icons */}
+       
         <div style={styles.navIcons}>
           {/* Search */}
           <Link to="/search" style={styles.iconLink} title="Search">
@@ -208,13 +208,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li style={{marginBottom: '1.25rem'}}>
-              {/* <Link 
-                to="/brand" 
-                style={{color: '#fff', textDecoration: 'none', fontSize: '1.125rem'}} 
-                onClick={() => setIsMenuOpen(false)}
-              >
-                BRAND
-              </Link> */}
+              
             </li>
             <li style={{marginBottom: '1.25rem'}}>
               <Link 

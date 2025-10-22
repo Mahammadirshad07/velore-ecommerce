@@ -164,7 +164,7 @@ const styles = {
   },
 };
 
-// Add CSS animations
+
 const styleSheet = document.createElement('style');
 styleSheet.textContent = `
   @keyframes slideIn {

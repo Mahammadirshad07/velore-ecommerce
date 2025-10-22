@@ -11,7 +11,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validation
+   
     if (password.length < 6) {
       alert('Password must be at least 6 characters long!');
       return;
@@ -23,7 +23,7 @@ const Signup = () => {
     }
 
     try {
-      // Check if email already exists
+      
       const checkResponse = await fetch(`http://localhost:5000/users?email=${email}`);
       const existingUsers = await checkResponse.json();
       
@@ -32,7 +32,7 @@ const Signup = () => {
         return;
       }
 
-      // Create new user
+     
       const response = await fetch('http://localhost:5000/users', {
         method: 'POST',
         headers: { 
