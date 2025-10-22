@@ -8,6 +8,7 @@ function Niche() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -15,14 +16,23 @@ function Niche() {
 
   useEffect(() => {
     fetch('/db.json')
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to load products');
+        }
+        return response.json();
+      })
       .then(data => {
-        const nicheProducts = data.products.filter(product => product.category === 'unisex');
+        // Filter for niche products (type: 'niche' OR category: 'unisex')
+        const nicheProducts = data.products.filter(
+          product => product.type === 'niche' || product.category === 'unisex'
+        );
         setProducts(nicheProducts);
         setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching products:', error);
+        setError(error.message);
         setLoading(false);
       });
   }, []);
@@ -171,7 +181,33 @@ function Niche() {
       fontSize: '1.5rem',
       padding: '3rem',
     },
+    error: {
+      textAlign: 'center',
+      color: '#ff4444',
+      fontSize: '1.2rem',
+      padding: '3rem',
+    },
   };
+
+  if (loading) {
+    return (
+      <div style={styles.container}>
+        <div style={styles.loading}>Loading products...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={styles.container}>
+        <div style={styles.error}>
+          Error loading products: {error}
+          <br />
+          <small>Make sure db.json is in the public folder</small>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={styles.container}>
@@ -181,8 +217,8 @@ function Niche() {
           <p style={styles.subtitle}>Exclusive Artisan Perfumes</p>
         </div>
 
-        {loading ? (
-          <div style={styles.loading}>Loading products...</div>
+        {products.length === 0 ? (
+          <div style={styles.loading}>No products found</div>
         ) : (
           <div style={styles.productsGrid}>
             {products.map((product) => (
@@ -230,6 +266,7 @@ function Niche() {
                       src={product.image}
                       alt={`${product.brand} ${product.name}`}
                       style={styles.productImage}
+                      loading="lazy"
                     />
                   </div>
                   <div style={styles.productInfo}>
