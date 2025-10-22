@@ -8,10 +8,9 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     
-   
     if (password.length < 6) {
       alert('Password must be at least 6 characters long!');
       return;
@@ -23,39 +22,32 @@ const Signup = () => {
     }
 
     try {
+      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+      const emailExists = existingUsers.some(user => user.email === email);
       
-      const checkResponse = await fetch(`http://localhost:5000/users?email=${email}`);
-      const existingUsers = await checkResponse.json();
-      
-      if (existingUsers.length > 0) {
+      if (emailExists) {
         alert('Email already registered! Please login.');
+        navigate('/login');
         return;
       }
 
-     
-      const response = await fetch('http://localhost:5000/users', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify({ 
-          name, 
-          email, 
-          password,
-          createdAt: new Date().toISOString()
-        })
-      });
+      const newUser = {
+        id: Date.now().toString(),
+        name: name,
+        email: email,
+        password: password,
+        createdAt: new Date().toISOString()
+      };
+
+      existingUsers.push(newUser);
+      localStorage.setItem('users', JSON.stringify(existingUsers));
       
-      if (response.ok) {
-        alert('Account created successfully! Please login.');
-        navigate('/login');
-      } else {
-        alert('Failed to create account. Please try again!');
-      }
+      alert('Account created successfully! Please login.');
+      navigate('/login');
       
     } catch (error) {
       console.error('Error:', error);
-      alert('Network error! Make sure json-server is running on port 5000.');
+      alert('Failed to create account. Please try again!');
     }
   };
 
@@ -123,6 +115,7 @@ const Signup = () => {
       cursor: 'pointer',
       marginTop: '1rem',
       letterSpacing: '0.05em',
+      transition: 'background-color 0.3s ease',
     },
     divider: {
       textAlign: 'center',
@@ -205,7 +198,12 @@ const Signup = () => {
             />
           </div>
 
-          <button type="submit" style={styles.button}>
+          <button 
+            type="submit" 
+            style={styles.button}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFA500'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FFD700'}
+          >
             CREATE ACCOUNT
           </button>
         </form>
