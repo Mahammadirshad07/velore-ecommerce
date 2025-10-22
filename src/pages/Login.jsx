@@ -6,24 +6,22 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     try {
+      // Get users from localStorage
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
       
-      const response = await fetch(`http://localhost:5000/users?email=${email}&password=${password}`);
-      const users = await response.json();
+      // Find user with matching email and password
+      const user = users.find(u => u.email === email && u.password === password);
       
-      if (users.length > 0) {
-        const user = users[0];
-        
-        
+      if (user) {
+        // Save login state
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('currentUser', JSON.stringify(user));
         
         alert(`Welcome back, ${user.name}!`);
-        
-      
         navigate('/');
       } else {
         alert('Invalid email or password!');
@@ -31,7 +29,7 @@ const Login = () => {
       
     } catch (error) {
       console.error('Error:', error);
-      alert('Network error! Make sure json-server is running on port 5000.');
+      alert('Failed to login. Please try again!');
     }
   };
 
@@ -99,6 +97,7 @@ const Login = () => {
       cursor: 'pointer',
       marginTop: '1rem',
       letterSpacing: '0.05em',
+      transition: 'background-color 0.3s ease',
     },
     divider: {
       textAlign: 'center',
@@ -149,7 +148,12 @@ const Login = () => {
             />
           </div>
 
-          <button type="submit" style={styles.button}>
+          <button 
+            type="submit" 
+            style={styles.button}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFA500'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FFD700'}
+          >
             LOGIN
           </button>
         </form>
