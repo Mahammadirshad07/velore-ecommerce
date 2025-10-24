@@ -409,7 +409,7 @@ function Search() {
 
          
           <main style={styles.mainContent}>
-            {/* Results Header */}
+            
             <div style={styles.resultsHeader}>
               <div style={styles.resultsCount}>
                 {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found

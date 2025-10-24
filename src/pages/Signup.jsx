@@ -8,7 +8,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (password.length < 6) {
@@ -22,32 +22,37 @@ const Signup = () => {
     }
 
     try {
-      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-      const emailExists = existingUsers.some(user => user.email === email);
+    
+      const checkResponse = await fetch(`http://localhost:5000/users?email=${email}`);
+      const existingUsers = await checkResponse.json();
       
-      if (emailExists) {
+      if (existingUsers.length > 0) {
         alert('Email already registered! Please login.');
-        navigate('/login');
         return;
       }
 
-      const newUser = {
-        id: Date.now().toString(),
-        name: name,
-        email: email,
-        password: password,
-        createdAt: new Date().toISOString()
-      };
-
-      existingUsers.push(newUser);
-      localStorage.setItem('users', JSON.stringify(existingUsers));
+      // Create new user
+      const response = await fetch('http://localhost:5000/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          name, 
+          email, 
+          password,
+          createdAt: new Date().toISOString()
+        })
+      });
       
-      alert('Account created successfully! Please login.');
-      navigate('/login');
+      if (response.ok) {
+        alert('Account created successfully! Please login.');
+        navigate('/login');
+      } else {
+        alert('Failed to create account. Please try again!');
+      }
       
     } catch (error) {
       console.error('Error:', error);
-      alert('Failed to create account. Please try again!');
+      alert('Make sure json-server is running: json-server --watch db.json --port 5000');
     }
   };
 

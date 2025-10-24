@@ -98,7 +98,8 @@ function Checkout() {
       
       try {
         
-        const response = await fetch('http://localhost:3001/orders', {
+        const response = await fetch('http://localhost:5000/orders', {
+
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -670,7 +671,7 @@ function Checkout() {
                 </div>
               </div>
 
-              {/* Payment Method */}
+            
               <div style={{ ...styles.formSection, marginTop: '1.5rem' }}>
                 <h2 style={styles.sectionTitle}>Payment Method</h2>
                 <div style={styles.paymentOptions}>

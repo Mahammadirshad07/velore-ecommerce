@@ -555,7 +555,7 @@ function Home() {
 
   return (
     <div>
-      {/* HERO BANNER */}
+   
       <div style={styles.bannerWrapper}>
         <div style={styles.heroContainer}>
           <div style={styles.slideContainer}>
@@ -590,7 +590,6 @@ function Home() {
         </div>
       </div>
 
-      {/* CATEGORIES */}
       <div style={styles.section}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>SHOP BY CATEGORY</h2>
@@ -618,7 +617,7 @@ function Home() {
         </div>
       </div>
 
-      {/* BEST SELLERS */}
+  
       <div style={styles.section}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>BEST SELLERS</h2>
@@ -708,7 +707,7 @@ function Home() {
         </div>
       </div>
 
-      {/* WHY CHOOSE US */}
+  
       <div style={{ ...styles.section, borderTop: '1px solid #2a2a2a' }}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>WHY CHOOSE VELORE</h2>
@@ -739,7 +738,7 @@ function Home() {
         </div>
       </div>
 
-      {/* FOOTER */}
+   
       <footer style={styles.footer}>
         <div style={styles.container}>
           <div style={styles.footerTop}>

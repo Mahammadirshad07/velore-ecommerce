@@ -23,7 +23,7 @@ function Niche() {
         return response.json();
       })
       .then(data => {
-        // Filter for niche products (type: 'niche' OR category: 'unisex')
+    
         const nicheProducts = data.products.filter(
           product => product.type === 'niche' || product.category === 'unisex'
         );

@@ -6,22 +6,23 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Get users from localStorage
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+      const response = await fetch(`http://localhost:5000/users?email=${email}&password=${password}`);
+      const users = await response.json();
       
-      // Find user with matching email and password
-      const user = users.find(u => u.email === email && u.password === password);
-      
-      if (user) {
-        // Save login state
+      if (users.length > 0) {
+        const user = users[0];
+        
+     
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('currentUser', JSON.stringify(user));
         
         alert(`Welcome back, ${user.name}!`);
+        
         navigate('/');
       } else {
         alert('Invalid email or password!');
@@ -29,7 +30,7 @@ const Login = () => {
       
     } catch (error) {
       console.error('Error:', error);
-      alert('Failed to login. Please try again!');
+      alert('Make sure json-server is running: json-server --watch db.json --port 5000');
     }
   };
 

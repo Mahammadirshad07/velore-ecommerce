@@ -1,9 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
-import { WishlistProvider } from './context/WishlistContext';
-import { ToastProvider } from './context/ToastContext';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -17,45 +15,73 @@ import Wishlist from './pages/Wishlist';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
 import OrderDetails from './pages/OrderDetails';
+import AdminLogin from './pages/admin/AdminLogin';
+import Dashboard from './pages/admin/Dashboard';
+import ProductManagement from './pages/admin/ProductManagement';
+import OrderManagement from './pages/admin/OrderManagement';
 
 function App() {
   const location = useLocation();
   
-  const hideNavbar = location.pathname === '/login' || location.pathname === '/signup';
+  // Hide navbar for login, signup, and all admin pages
+  const hideNavbar = location.pathname === '/login' || 
+                     location.pathname === '/signup' || 
+                     location.pathname.startsWith('/admin');
 
   return (
-    <CartProvider>
-      <WishlistProvider>
-        <ToastProvider>
-          <div>
-            {!hideNavbar && <Navbar />}
-            
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/for-men" element={<ForMen />} />
-              <Route path="/for-women" element={<ForWomen />} />
-              <Route path="/niche" element={<Niche />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/account" element={<Navigate to="/login" replace />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/order/:orderNumber" element={<OrderDetails />} />
-              
-              
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
-        </ToastProvider>
-      </WishlistProvider>
-    </CartProvider>
+    <div>
+      {!hideNavbar && <Navbar />}
+      
+      <Routes>
+        {/* Customer Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/for-men" element={<ForMen />} />
+        <Route path="/for-women" element={<ForWomen />} />
+        <Route path="/niche" element={<Niche />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/account" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/order/:orderNumber" element={<OrderDetails />} />
+        
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route 
+          path="/admin/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/products" 
+          element={
+            <ProtectedRoute>
+              <ProductManagement />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/orders" 
+          element={
+            <ProtectedRoute>
+              <OrderManagement />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* 404 Not Found */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
   );
 }
-
 
 function NotFound() {
   return (
