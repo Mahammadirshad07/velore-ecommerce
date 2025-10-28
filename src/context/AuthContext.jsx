@@ -17,8 +17,8 @@ export function AuthProvider({ children }) {
   });
 
   const login = (email, password) => {
-    // Simple authentication - replace with real API later
-    if (email === 'admin@velore.com' && password === 'admin123') {
+    // Updated password to match your AdminLogin component
+    if (email === 'admin@velore.com' && password === 'Kedila@1234') {
       const userData = {
         id: 1,
         email: email,
@@ -27,6 +27,7 @@ export function AuthProvider({ children }) {
       };
       setUser(userData);
       localStorage.setItem('adminUser', JSON.stringify(userData));
+      localStorage.setItem('isAdminLoggedIn', 'true');
       return true;
     }
     return false;
@@ -35,6 +36,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('adminUser');
+    localStorage.removeItem('isAdminLoggedIn');
   };
 
   const value = {

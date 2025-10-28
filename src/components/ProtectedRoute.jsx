@@ -1,14 +1,27 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 
 function ProtectedRoute({ children }) {
-  const { user, isAdmin } = useAuth();
+  // Check localStorage directly instead of AuthContext
+  const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+  const adminUser = localStorage.getItem('adminUser');
+  
+  // Parse the admin user data
+  let parsedAdminUser = null;
+  if (adminUser) {
+    try {
+      parsedAdminUser = JSON.parse(adminUser);
+    } catch (error) {
+      console.error('Error parsing admin user:', error);
+    }
+  }
 
-  if (!user) {
+  // If not logged in, redirect to admin login
+  if (!isAdminLoggedIn || !parsedAdminUser) {
     return <Navigate to="/admin/login" replace />;
   }
 
-  if (!isAdmin) {
+  // Check if user has admin role
+  if (parsedAdminUser.role !== 'admin') {
     return <Navigate to="/" replace />;
   }
 

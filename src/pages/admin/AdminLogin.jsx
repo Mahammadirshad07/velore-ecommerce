@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Admin credentials check
-    if (email === 'admin@velore.com' && password === 'Kedila@1234') {
-      // Store admin session
-      localStorage.setItem('isAdminLoggedIn', 'true');
-      localStorage.setItem('adminUser', JSON.stringify({
-        name: 'Admin',
-        email: 'admin@velore.com',
-        role: 'admin'
-      }));
-      
+    // Use the login function from AuthContext
+    const success = login(email, password);
+    
+    if (success) {
       // Redirect to dashboard
       navigate('/admin/dashboard');
     } else {
